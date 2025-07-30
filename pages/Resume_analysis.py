@@ -1,37 +1,41 @@
 import streamlit as st
-import base64
+import time  # 👈 Add this line
+from datetime import date
 
-st.set_page_config(page_title="Placenix Resume Analyzer", layout="wide")
+st.set_page_config(page_title="Resume Analyzer", layout="wide")
 
 st.title("📄 Resume Analyzer")
-st.markdown("Upload your resume and receive AI-driven feedback to boost your placement chances.")
+st.markdown("Upload your resume to get an instant breakdown of your skills, gaps, and suggestions.")
 
-# Upload Section
-uploaded_file = st.file_uploader("Upload your resume (PDF or DOCX)", type=["pdf", "docx"])
+# Upload Resume
+uploaded_file = st.file_uploader("Upload your Resume (PDF or DOCX)", type=["pdf", "docx"])
 
-if uploaded_file is not None:
-    st.success("✅ Resume uploaded successfully!")
-    file_details = {
-        "filename": uploaded_file.name,
-        "filetype": uploaded_file.type,
-        "filesize": uploaded_file.size,
-    }
-    st.json(file_details)
+# Simulate analysis (to be replaced with actual ML logic later)
+if uploaded_file:
+    st.success(f"✅ {uploaded_file.name} uploaded successfully!")
 
-    st.markdown("---")
-    st.markdown("### 📊 Analysis Overview")
+    with st.spinner("Analyzing resume..."):
+        time.sleep(2)
+    st.subheader("📌 Summary Insights")
+    col1, col2 = st.columns(2)
 
-    # Placeholder data
-    st.write("**Skill Match:** 72%")
-    st.write("**Detected Keywords:** Python, SQL, Data Analysis, Machine Learning")
-    st.write("**Suggestions:**")
-    st.markdown("- Add more project-based experience.")
-    st.markdown("- Include specific tools (e.g., Scikit-learn, Pandas).")
-    st.markdown("- Mention internships with measurable impact.")
+    with col1:
+        st.metric(label="Detected Skills", value="Python, SQL, ML")
+        st.metric(label="Matching Job Roles", value="Data Analyst, ML Engineer")
+    
+    with col2:
+        st.metric(label="Experience Level", value="Intermediate")
+        st.metric(label="Soft Skill Score", value="7.8 / 10")
 
-    st.markdown("---")
-    st.markdown("### 📈 Resume Score")
-    st.progress(0.72)
+    st.subheader("📈 Suggestions for Improvement")
+    st.markdown("""
+    - Add more project links with clear outcomes  
+    - Highlight impact metrics in work experience  
+    - Include keywords like 'Data Pipeline', 'API Integration'  
+    - Consider contributing to open-source projects
+    """)
 
+    st.subheader("📅 Weekly Action Plan")
+    st.success("🎯 This week: Add one new project to GitHub and update resume.")
 else:
-    st.info("Please upload a resume to see analysis.")
+    st.warning("Please upload your resume to begin analysis.")

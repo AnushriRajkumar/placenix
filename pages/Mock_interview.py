@@ -1,33 +1,28 @@
 import streamlit as st
-import time
 
-st.set_page_config(page_title="Placenix Mock Interview", layout="wide")
+st.set_page_config(page_title="Mock Interview", layout="wide")
 
-st.title("🎤 Mock Interview")
-st.markdown("Practice technical + HR interviews with AI-based evaluation of your answers.")
+st.title("🎤 AI-Powered Mock Interview")
+st.markdown("""
+Simulate a real interview experience powered by AI.  
+Upload your resume, answer questions live, and get real-time feedback on your performance.
+""")
 
-# Tabs for different interview types
-interview_type = st.radio("Select Interview Type", ["Technical", "HR", "Custom"], horizontal=True)
+# Upload Resume
+uploaded_resume = st.file_uploader("Upload your Resume", type=["pdf", "docx"])
 
-# Question display area
-st.markdown("### 🧠 Interview Question")
-st.write("Describe a project you've worked on and the challenges you faced.")
+# Select Job Role
+role = st.selectbox("Select Target Role", ["Data Scientist", "Software Engineer", "Product Manager", "Custom"])
 
-# Text input for answer
-user_answer = st.text_area("Your Answer", height=150)
+# Start Interview Button
+if uploaded_resume and st.button("Start Mock Interview"):
+    st.success("Interview started. Respond clearly to each question.")
+    st.info("⚠️ This is a simulation. Camera and mic access features coming soon!")
 
-# Button to submit
-if st.button("Submit Answer"):
-    with st.spinner("Analyzing your response..."):
-        time.sleep(2)  # Placeholder for backend AI analysis
+    # Placeholder: Future logic for interview questions, webcam/audio analysis, etc.
+    with st.expander("💡 Example Question"):
+        st.write("Tell me about a challenging project you've worked on and how you overcame obstacles.")
 
-    # Fake evaluation (we’ll later use Wave2Vec, MediaPipe, DistilBERT, etc.)
-    st.markdown("### ✅ AI Feedback")
-    st.write("**Clarity:** 80%")
-    st.write("**Confidence:** 70%")
-    st.write("**Content Quality:** 75%")
-    st.success("Try to be more specific about tools used and outcomes achieved.")
-
-# Optional: webcam/audio button placeholders
-with st.expander("🎥 Advanced Mock Interview (Coming Soon)"):
-    st.info("This feature will analyze body language and speech emotions using OpenFace, MediaPipe, and Wave2Vec.")
+# Placeholder for future enhancements
+st.markdown("---")
+st.caption("📌 Coming soon: AI-based question generation, webcam tracking, emotion detection, and response evaluation.")
