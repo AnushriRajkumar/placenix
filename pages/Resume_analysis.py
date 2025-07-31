@@ -9,6 +9,42 @@ st.markdown("Upload your resume to get an instant breakdown of your skills, gaps
 
 # Upload Resume
 uploaded_file = st.file_uploader("Upload your Resume (PDF or DOCX)", type=["pdf", "docx"])
+import pdfplumber
+
+def extract_text_from_pdf(file):
+    with pdfplumber.open(file) as pdf:
+        text = ""
+        for page in pdf.pages:
+            text += page.extract_text() or ""
+    return text
+if uploaded_file is not None:
+    st.success("✅ Resume uploaded successfully!")
+
+    # Extract text
+    resume_text = extract_text_from_pdf(uploaded_file)
+
+    # Check for key sections
+    with st.expander("🔍 Resume Insights"):
+        required_sections = ["education", "skills", "experience", "projects", "certifications"]
+        found = []
+        missing = []
+
+        for section in required_sections:
+            if section.lower() in resume_text.lower():
+                found.append(section)
+            else:
+                missing.append(section)
+
+        st.markdown("### ✅ Found Sections")
+        st.write(found)
+
+        st.markdown("### ⚠️ Missing Sections")
+        st.write(missing)
+
+        if len(missing) == 0:
+            st.success("Great! Your resume has all essential sections.")
+        else:
+            st.warning("Consider adding the missing sections for better completeness.")
 
 # Simulate analysis (to be replaced with actual ML logic later)
 if uploaded_file:

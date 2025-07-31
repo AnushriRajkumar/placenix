@@ -1,91 +1,88 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
 import datetime
+import random
 
-st.set_page_config(page_title="Placenix Dashboard", layout="wide")
-st.title("📊 Dashboard")
-st.markdown("Welcome to your Placement Readiness Dashboard!")
+st.set_page_config(page_title="Placenix | Dashboard", layout="wide")
 
-# ----------------------
-# Simulate Readiness Forecast Chart
-# ----------------------
-st.subheader("📈 Readiness Forecast (Time Series)")
+st.title("📊 Placenix Dashboard")
+st.image("https://api.dicebear.com/8.x/bottts/svg?seed=PlacenixUser", width=100, caption="Your Avatar 🤖")
+st.markdown("Welcome back! Here's your progress overview:")
 
-# Simulated time series data
-dates = pd.date_range(start=datetime.date.today(), periods=10)
-readiness_scores = np.linspace(40, 85, num=10) + np.random.normal(0, 3, 10)
+# --- Skill Badges ---
+st.subheader("🎖️ Your Skill Badges")
+badge_cols = st.columns(4)
 
-df = pd.DataFrame({
-    "Date": dates,
-    "Readiness Score": readiness_scores
-})
-
-st.line_chart(df.set_index("Date"))
-
-# ----------------------
-# Burnout Risk Meter
-# ----------------------
-st.subheader("🔥 Burnout Risk Prediction")
-
-burnout_score = np.random.randint(10, 90)  # simulated
-
-color = "🟢 Low"
-if burnout_score > 70:
-    color = "🔴 High"
-elif burnout_score > 40:
-    color = "🟠 Medium"
-
-st.metric(label="Burnout Risk Score", value=f"{burnout_score}%", delta=None, help="Predicted using behavioral and physiological patterns")
-st.markdown(f"Current Burnout Level: **{color}**")
-
-# ----------------------
-# Daily Task Checklist
-# ----------------------
-st.subheader("✅ Today's AI-Suggested Tasks")
-
-tasks = {
-    "Complete a mock interview": False,
-    "Update your resume projects": True,
-    "Revise 5 aptitude questions": False,
-    "Practice DSA topic": True,
-    "Reflect on 1 interview question": False
+badges = {
+    "Communication": "🗣️",
+    "Coding": "💻",
+    "Problem Solving": "🧠",
+    "Teamwork": "🤝",
 }
 
-completed = 0
-for task, status in tasks.items():
-    checked = st.checkbox(task, value=status)
-    if checked:
-        completed += 1
+for i, (skill, emoji) in enumerate(badges.items()):
+    with badge_cols[i]:
+        st.markdown(f"### {emoji} {skill}")
+        st.success("Unlocked ✅")
+# --- Daily Streak ---
+st.subheader("🔥 Your Daily Streak")
 
-st.success(f"🎉 You’ve completed {completed} / {len(tasks)} tasks today!")
+# For now, let’s simulate a 5-day streak (we'll replace it with real logic later)
+current_streak = 5
+streak_emoji = "🔥" * current_streak
+st.metric("Active Days", f"{current_streak} days")
+st.markdown(f"**{streak_emoji}**")
 
-if completed == len(tasks):
-    st.balloons()
-    st.markdown("🏅 **You’ve earned a daily reward badge!**")
+st.divider()
 
-# ----------------------
-# Resume Status
-# ----------------------
-st.subheader("📝 Resume Strength")
+# --- Readiness Score ---
+st.subheader("📈 Placement Readiness")
 
-resume_score = np.random.randint(50, 95)  # placeholder
-resume_feedback = "Strong" if resume_score > 75 else "Needs More Projects"
+readiness = random.randint(60, 85)  # Replace with real value later
+st.progress(readiness / 100)
+st.info(f"You are {readiness}% ready. Keep it up! 💪")
 
-st.info(f"Resume Score: **{resume_score}/100**")
-st.markdown(f"🔍 Feedback: **{resume_feedback}**")
+st.divider()
 
-# ----------------------
-# Last Mock Interview Feedback
-# ----------------------
-st.subheader("🎤 Mock Interview Summary")
+# --- Task Suggestion ---
+st.subheader("📌 Quick Task Suggestion")
 
-mock_score = np.random.randint(40, 95)
-st.warning(f"🧠 Your last interview score was **{mock_score}/100**")
+tasks = [
+    "✅ Complete a mock interview",
+    "✍️ Update your resume",
+    "🧠 Solve 3 LeetCode questions",
+    "🤖 Ask Placenix chatbot for a 1-hour productivity plan",
+]
 
-if mock_score > 80:
-    st.success("💡 Excellent! You're interview-ready.")
-elif mock_score > 60:
-    st.info("🙂 You're getting there. Keep practicing.")
-else:
-    st.error("😕 Let's work on those weak spots!")
+suggestion = random.choice(tasks)
+st.markdown(f"**Today’s Task:** {suggestion}")
+st.divider()
+st.markdown("## ✅ Daily Task Checklist")
+
+# Simulated task list
+tasks = {
+    "Completed Mock Interview": False,
+    "Analyzed Resume": False,
+    "Used AI Chatbot": False,
+    "Checked Dashboard": False
+}
+
+# Store completed task count
+completed_tasks = 0
+
+# Display tasks with checkboxes
+for task in tasks:
+    if st.checkbox(task, key=task):
+        completed_tasks += 1
+# Simulated XP values
+xp_per_task = 10
+total_xp = completed_tasks * xp_per_task
+level = total_xp // 40 + 1  # Every 40 XP = level up
+xp_progress = total_xp % 40
+
+# XP progress bar
+st.write(f"**Level {level}**")
+st.progress(xp_progress / 40)
+
+# Optional motivational quote
+if total_xp > 0:
+    st.caption("“Greatness is a lot of small things done well every day.” 🌟")
